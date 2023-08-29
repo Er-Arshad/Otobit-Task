@@ -1,0 +1,40 @@
+﻿
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" id="userInput" placeholder="Enter your name" />
+            <br /><br />
+            <textarea id="messageInput" placeholder="Type your message" rows="4"></textarea>
+            <br />
+            <button id="sendButton">Send</button>
+        </div>
+        <div class="col-md-8">
+            <div id="chat"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/accets/singalr.js"></script>
+<script>
+    const user = prompt("Enter your name:");
+    const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    connection.start().then(() => {
+        $("#sendButton").prop("disabled", false);
+    }).catch((err) => {
+        console.error(err.toString());
+    });
+
+    $("#sendButton").click(function () {
+        const message = $("#messageInput").val();
+        connection.invoke("SendMessage", user, message);
+        $("#messageInput").val("");
+    });
+
+    connection.on("ReceiveMessage", (user, message) => {
+        $("#chat").append(`<strong>${user}:</strong> ${message}<br>`);
+    });
+</script>
+

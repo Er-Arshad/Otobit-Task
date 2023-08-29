@@ -1,0 +1,63 @@
+﻿@*@using OtobitProjectTask.Models;
+@model MakeBookOfferModel
+<h4>Make offer for Books</h4>
+<form method="post">
+    <select asp-for="CustomerId">
+        <option>select Customer</option>
+        @foreach(var item in ViewBag.Customers)
+        {
+            <option value="@item.Id">@item.UserName</option>
+        }
+    </select>
+    <select asp-for="BookId">
+        <option>select book</option>
+        @foreach (var item in ViewBag.Books)
+        {
+            <option value="@item.BookId">@item.Title (@item.Price)</option>
+        }
+    </select>
+    @if(@ViewBag.Check){
+    <h5>@ViewBag.Responce</h5>
+    }
+    <button>Submit</button>
+</form>*@
+
+@using OtobitProjectTask.Models
+@model MakeBookOfferModel
+<h4>Make an Offer for Books</h4>
+
+    
+        @if (ViewBag.Check)
+        {
+            <h4 style="color:">Your Offer for seller is submited successful</h4>
+        }
+@if (ViewBag.CheckOffer)
+        {
+    @foreach (var item in @ViewBag.AcceptedOffers)
+    {
+        <h4 style="color:">Your Offer is Accepted</h4>
+        <form method="post">
+            <button asp-action="ReceivedOffer" asp-route-Id="@item.CustomerId">Ok</button>
+        </form>
+    }
+   
+        }
+    
+<form method="post">
+    @foreach (var item in @ViewBag.Customer)
+    {
+        <p>@item.UserName</p>
+        var user = @item.Id;
+        <input hidden value=@user asp-for="CustomerId"/>
+   
+    }
+    <select asp-for="BookId">
+        <option value="0" >Select a Book</option>
+        @foreach (var item in ViewBag.Books)
+        {
+            <option value="@item.BookId">@item.Title (@item.Price)</option>
+        }
+    </select>
+    <button type="submit">Submit</button>
+
+</form>

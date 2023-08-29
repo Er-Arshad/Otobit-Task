@@ -1,0 +1,42 @@
+﻿@model IEnumerable<OtobitProjectTask.Models.CustomerRequest>
+
+@{
+    ViewData["Title"] = "OfferAccepted";
+}
+
+<h1>OfferAccepted</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+           
+           <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+                @if (!@item.IsActive){
+                    <td>
+                        This offer is accepted
+                    </td>
+                }
+                else{
+                             <td>
+                                    <a asp-action="OfferAccepte" asp-route-Id="@item.Id">Accept</a> 
+                        </td>
+                }
+               
+      </tr>
+}
+    </tbody>
+</table>
